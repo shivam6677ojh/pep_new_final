@@ -1,18 +1,9 @@
-const openai = require('../config/openai');
+const { getGeminiModel } = require('../config/gemini');
 
 const buildResponse = async (prompt) => {
-  const response = await openai.chat.completions.create({
-    model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-    messages: [
-      {
-        role: 'user',
-        content: prompt
-      }
-    ],
-    temperature: 0.7
-  });
-
-  return response.choices?.[0]?.message?.content?.trim() || '';
+  const model = getGeminiModel();
+  const result = await model.generateContent(prompt);
+  return result.response?.text()?.trim() || '';
 };
 
 const generateDescription = async ({ title, category, features, tone }) => {
