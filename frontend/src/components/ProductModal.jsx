@@ -126,6 +126,15 @@ const ProductModal = ({ product, mode = 'view', onClose, onSave, saving = false 
                 placeholder="Stock"
               />
               <input
+                name="sales"
+                type="number"
+                value={formData.sales || ''}
+                onChange={onChange}
+                disabled={isReadOnly}
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none disabled:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                placeholder="Sales"
+              />
+              <input
                 name="image"
                 value={formData.image || ''}
                 onChange={onChange}

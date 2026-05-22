@@ -11,6 +11,7 @@ const AddProduct = () => {
     category: '',
     price: '',
     stock: '',
+    sales: '',
     description: '',
     image: ''
   });
@@ -27,7 +28,8 @@ const AddProduct = () => {
       await api.post('/products', {
         ...formData,
         price: Number(formData.price),
-        stock: Number(formData.stock)
+        stock: Number(formData.stock),
+        sales: Number(formData.sales || 0)
       });
 
       toast.success('Product added successfully');
@@ -80,6 +82,14 @@ const AddProduct = () => {
           placeholder="Stock"
           className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
+        />
+        <input
+          name="sales"
+          type="number"
+          value={formData.sales}
+          onChange={onChange}
+          placeholder="Sales"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
         <input
           name="image"
