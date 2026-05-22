@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/AuthContext';
 import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/Login';
@@ -29,26 +30,29 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+    <>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      <Route
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/add" element={<AddProduct />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/ai-content" element={<AIContent />} />
-      </Route>
+        <Route
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/add" element={<AddProduct />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/ai-content" element={<AIContent />} />
+        </Route>
 
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </>
   );
 };
 

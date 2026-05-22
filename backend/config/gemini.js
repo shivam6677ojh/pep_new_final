@@ -9,7 +9,7 @@ const getGeminiModel = () => {
 
   const client = new GoogleGenerativeAI(apiKey);
   const model = client.getGenerativeModel({
-    model: process.env.GEMINI_MODEL || 'gemini-flash-latest'
+    model: process.env.GEMINI_MODEL || 'gemini-2.5-flash'
   });
 
   return model;

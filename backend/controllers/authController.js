@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const seedDemoProducts = require('../utils/seedDemoProducts');
 
 const registerUser = async (req, res, next) => {
   try {
@@ -26,6 +27,8 @@ const registerUser = async (req, res, next) => {
       password: hashedPassword,
       role
     });
+
+    await seedDemoProducts(user._id);
 
     return res.status(201).json({
       _id: user._id,

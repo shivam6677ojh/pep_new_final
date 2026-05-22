@@ -26,9 +26,21 @@ const generateSuggestions = async ({ businessSummary, topProducts, currentIssues
   return buildResponse(prompt);
 };
 
+const generatePricingSuggestion = async ({ title, category, price, competitorTrend, demand }) => {
+  const prompt = `You are an ecommerce pricing analyst. Recommend a smarter selling price.\n\nProduct: ${title}\nCategory: ${category}\nCurrent price: ${price || 'N/A'}\nCompetitor trend: ${competitorTrend || 'N/A'}\nDemand: ${demand || 'N/A'}\n\nReturn:\n- Suggested price\n- Reason\n- Upside/risks in 3 bullets.`;
+  return buildResponse(prompt);
+};
+
+const generateProductScore = async ({ title, category, description, tags }) => {
+  const prompt = `Score this product for SEO and marketing readiness.\n\nProduct: ${title}\nCategory: ${category}\nDescription: ${description || 'N/A'}\nTags: ${tags || 'N/A'}\n\nReturn exactly this format:\nSEO Score: <0-100>\nMarketing Quality: <Poor/Good/Great>\nReason: <one short paragraph>`;
+  return buildResponse(prompt);
+};
+
 module.exports = {
   generateDescription,
   generateTags,
   generateCaption,
-  generateSuggestions
+  generateSuggestions,
+  generatePricingSuggestion,
+  generateProductScore
 };

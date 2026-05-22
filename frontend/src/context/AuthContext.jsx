@@ -7,8 +7,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const saveAuth = (payload) => {
-    localStorage.setItem('smartstore_token', payload.token);
+  const storageKey = 'smartstore_token';
+
+  const saveAuth = (payload, rememberMe = true) => {
+    localStorage.removeItem(storageKey);
+    sessionStorage.removeItem(storageKey);
+
+    if (rememberMe) {
+      localStorage.setItem(storageKey, payload.token);
+    } else {
+      sessionStorage.setItem(storageKey, payload.token);
+    }
+
     setUser({
       _id: payload._id,
       name: payload.name,
@@ -17,26 +27,27 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const login = async (credentials) => {
+  const login = async (credentials, rememberMe = true) => {
     const { data } = await api.post('/auth/login', credentials);
-    saveAuth(data);
+    saveAuth(data, rememberMe);
     return data;
   };
 
-  const register = async (payload) => {
+  const register = async (payload, rememberMe = true) => {
     const { data } = await api.post('/auth/register', payload);
-    saveAuth(data);
+    saveAuth(data, rememberMe);
     return data;
   };
 
   const logout = () => {
-    localStorage.removeItem('smartstore_token');
+    localStorage.removeItem(storageKey);
+    sessionStorage.removeItem(storageKey);
     setUser(null);
   };
 
   useEffect(() => {
     const hydrate = async () => {
-      const token = localStorage.getItem('smartstore_token');
+      const token = localStorage.getItem(storageKey) || sessionStorage.getItem(storageKey);
 
       if (!token) {
         setLoading(false);

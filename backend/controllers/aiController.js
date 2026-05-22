@@ -3,7 +3,9 @@ const {
   generateDescription,
   generateTags,
   generateCaption,
-  generateSuggestions
+  generateSuggestions,
+  generatePricingSuggestion,
+  generateProductScore
 } = require('../services/aiService');
 
 const handleValidation = (req, res) => {
@@ -55,9 +57,31 @@ const suggestions = async (req, res, next) => {
   }
 };
 
+const pricing = async (req, res, next) => {
+  try {
+    if (!handleValidation(req, res)) return;
+    const result = await generatePricingSuggestion(req.body);
+    return res.status(200).json({ result });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const score = async (req, res, next) => {
+  try {
+    if (!handleValidation(req, res)) return;
+    const result = await generateProductScore(req.body);
+    return res.status(200).json({ result });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   description,
   tags,
   caption,
-  suggestions
+  suggestions,
+  pricing,
+  score
 };

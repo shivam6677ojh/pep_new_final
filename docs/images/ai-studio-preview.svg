@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#fff7ed" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" rx="32" fill="url(#bg)" />
+  <text x="70" y="80" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" fill="#0f172a">AI Content Studio</text>
+  <rect x="70" y="120" width="1060" height="170" rx="26" fill="#ffffff" stroke="#fed7aa" />
+  <rect x="100" y="150" width="460" height="56" rx="18" fill="#f8fafc" stroke="#e2e8f0" />
+  <rect x="580" y="150" width="520" height="56" rx="18" fill="#f8fafc" stroke="#e2e8f0" />
+  <rect x="100" y="220" width="460" height="56" rx="18" fill="#f8fafc" stroke="#e2e8f0" />
+  <rect x="580" y="220" width="520" height="56" rx="18" fill="#f8fafc" stroke="#e2e8f0" />
+  <rect x="70" y="320" width="1060" height="310" rx="26" fill="#ffffff" stroke="#fed7aa" />
+  <rect x="100" y="360" width="310" height="230" rx="20" fill="#fff7ed" stroke="#fdba74" />
+  <rect x="445" y="360" width="310" height="230" rx="20" fill="#fff7ed" stroke="#fdba74" />
+  <rect x="790" y="360" width="310" height="230" rx="20" fill="#fff7ed" stroke="#fdba74" />
+  <text x="120" y="396" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#c2410c">Description</text>
+  <text x="465" y="396" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#c2410c">SEO Tags</text>
+  <text x="810" y="396" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#c2410c">Pricing Score</text>
+  <text x="120" y="438" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">Copy • Export • Markdown formatting</text>
+  <text x="465" y="438" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">Sequential API requests to avoid rate limits</text>
+  <text x="810" y="438" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">Suggested price + SEO score cards</text>
+</svg>

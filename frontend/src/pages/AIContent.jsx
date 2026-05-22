@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import api from '../api/axios';
 import AIResultCard from '../components/AIResultCard';
 
@@ -13,10 +14,14 @@ const AIContent = () => {
   const [results, setResults] = useState({
     description: '',
     tags: '',
-    caption: ''
+    caption: '',
+    pricing: '',
+    score: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
   const onChange = (event) => {
     setFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -28,19 +33,27 @@ const AIContent = () => {
     setError('');
 
     try {
-      const [descRes, tagsRes, capRes] = await Promise.all([
-        api.post('/ai/description', formData),
-        api.post('/ai/tags', formData),
-        api.post('/ai/caption', formData)
-      ]);
+      const descRes = await api.post('/ai/description', formData);
+      await delay(4000);
+      const tagsRes = await api.post('/ai/tags', formData);
+      await delay(4000);
+      const capRes = await api.post('/ai/caption', formData);
+      await delay(4000);
+      const pricingRes = await api.post('/ai/pricing', formData);
+      await delay(4000);
+      const scoreRes = await api.post('/ai/score', formData);
 
       setResults({
         description: descRes.data.result,
         tags: tagsRes.data.result,
-        caption: capRes.data.result
+        caption: capRes.data.result,
+        pricing: pricingRes.data.result,
+        score: scoreRes.data.result
       });
+      toast.success('AI content generated');
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to generate content right now.');
+      toast.error('Failed to generate AI content');
     } finally {
       setLoading(false);
     }
@@ -50,7 +63,9 @@ const AIContent = () => {
     setResults({
       description: '',
       tags: '',
-      caption: ''
+      caption: '',
+      pricing: '',
+      score: ''
     });
     setError('');
   };
@@ -58,17 +73,17 @@ const AIContent = () => {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900">AI Content Studio</h2>
-        <p className="text-sm text-slate-500">Generate descriptions, tags, and captions in one click.</p>
+        <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">AI Content Studio</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Generate descriptions, tags, captions, pricing ideas, and product scores in one click.</p>
       </div>
 
-      <form onSubmit={generateAll} className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2">
+      <form onSubmit={generateAll} className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:grid-cols-2 dark:border-slate-800 dark:bg-slate-950">
         <input
           name="title"
           value={formData.title}
           onChange={onChange}
           placeholder="Product Title"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -76,7 +91,7 @@ const AIContent = () => {
           value={formData.category}
           onChange={onChange}
           placeholder="Category"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -84,14 +99,14 @@ const AIContent = () => {
           value={formData.audience}
           onChange={onChange}
           placeholder="Audience"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
         <input
           name="platform"
           value={formData.platform}
           onChange={onChange}
           placeholder="Platform"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
         <textarea
           name="description"
@@ -99,7 +114,7 @@ const AIContent = () => {
           value={formData.description}
           onChange={onChange}
           placeholder="Optional base description"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
         <div className="flex flex-wrap gap-2 md:col-span-2">
           <button
@@ -107,7 +122,7 @@ const AIContent = () => {
             disabled={loading}
             className="rounded-xl bg-cyan-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:bg-cyan-300"
           >
-            {loading ? 'Generating...' : 'Generate AI Content'}
+            {loading ? 'Generating AI Content...' : 'Generate AI Content'}
           </button>
           <button
             type="button"
@@ -121,10 +136,18 @@ const AIContent = () => {
 
       {error ? <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">{error}</p> : null}
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      {loading ? (
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
+          Generating AI Content... Please wait.
+        </div>
+      ) : null}
+
+      <div className="grid gap-4 xl:grid-cols-2">
         <AIResultCard title="Description" content={results.description} />
         <AIResultCard title="SEO Tags" content={results.tags} />
         <AIResultCard title="Caption" content={results.caption} />
+        <AIResultCard title="AI Pricing Suggestion" content={results.pricing} />
+        <AIResultCard title="AI Product Score" content={results.score} />
       </div>
     </div>
   );

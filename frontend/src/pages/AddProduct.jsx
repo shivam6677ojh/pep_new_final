@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import api from '../api/axios';
 
 const AddProduct = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -19,30 +21,38 @@ const AddProduct = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    await api.post('/products', {
-      ...formData,
-      price: Number(formData.price),
-      stock: Number(formData.stock)
-    });
+    try {
+      await api.post('/products', {
+        ...formData,
+        price: Number(formData.price),
+        stock: Number(formData.stock)
+      });
 
-    navigate('/products');
+      toast.success('Product added successfully');
+      navigate('/products');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add product');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-900">Add Product</h2>
-        <p className="text-sm text-slate-500">Grow inventory with clean catalog entries.</p>
+        <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">Add Product</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Grow inventory with clean catalog entries.</p>
       </div>
 
-      <form onSubmit={onSubmit} className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2">
+      <form onSubmit={onSubmit} className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2 dark:border-slate-800 dark:bg-slate-950">
         <input
           name="title"
           value={formData.title}
           onChange={onChange}
           placeholder="Title"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -50,7 +60,7 @@ const AddProduct = () => {
           value={formData.category}
           onChange={onChange}
           placeholder="Category"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -59,7 +69,7 @@ const AddProduct = () => {
           value={formData.price}
           onChange={onChange}
           placeholder="Price"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -68,7 +78,7 @@ const AddProduct = () => {
           value={formData.stock}
           onChange={onChange}
           placeholder="Stock"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           required
         />
         <input
@@ -76,7 +86,7 @@ const AddProduct = () => {
           value={formData.image}
           onChange={onChange}
           placeholder="Image URL"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
         <textarea
           name="description"
@@ -84,11 +94,14 @@ const AddProduct = () => {
           onChange={onChange}
           placeholder="Description"
           rows="4"
-          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2"
+          className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
         />
 
-        <button className="rounded-xl bg-cyan-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-cyan-700 md:col-span-2">
-          Save Product
+        <button
+          disabled={loading}
+          className="rounded-xl bg-cyan-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:bg-cyan-300 md:col-span-2"
+        >
+          {loading ? 'Saving...' : 'Save Product'}
         </button>
       </form>
     </div>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#ecfeff" />
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f0f9ff" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" rx="32" fill="url(#bg)" />
+  <text x="60" y="76" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#0f172a">SmartStore AI Architecture</text>
+  <text x="60" y="112" font-family="Inter, Arial, sans-serif" font-size="16" fill="#475569">Frontend, backend, AI, analytics, and database layers</text>
+
+  <rect x="70" y="170" width="280" height="160" rx="24" fill="url(#card)" stroke="#bae6fd" />
+  <text x="210" y="214" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Frontend</text>
+  <text x="210" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">React + Vite</text>
+  <text x="210" y="280" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">Tailwind UI</text>
+
+  <rect x="460" y="170" width="280" height="160" rx="24" fill="url(#card)" stroke="#bae6fd" />
+  <text x="600" y="214" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Backend API</text>
+  <text x="600" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">Express + Node.js</text>
+  <text x="600" y="280" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">JWT + Validation</text>
+
+  <rect x="850" y="170" width="280" height="160" rx="24" fill="url(#card)" stroke="#bae6fd" />
+  <text x="990" y="214" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Data &amp; AI</text>
+  <text x="990" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">MongoDB Atlas</text>
+  <text x="990" y="280" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0f766e">Gemini + Analytics</text>
+
+  <path d="M350 250 L460 250" stroke="#0ea5e9" stroke-width="10" stroke-linecap="round" />
+  <path d="M740 250 L850 250" stroke="#0ea5e9" stroke-width="10" stroke-linecap="round" />
+
+  <rect x="140" y="420" width="900" height="150" rx="28" fill="#ffffff" stroke="#bae6fd" />
+  <text x="190" y="468" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Core Modules</text>
+  <text x="190" y="505" font-family="Inter, Arial, sans-serif" font-size="18" fill="#334155">Auth • Product CRUD • AI Content • Analytics • Reporting</text>
+  <text x="190" y="540" font-family="Inter, Arial, sans-serif" font-size="18" fill="#334155">Demo data is seeded automatically so dashboards look active on first login.</text>
+</svg>

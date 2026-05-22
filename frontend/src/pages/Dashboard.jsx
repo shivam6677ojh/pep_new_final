@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import api from '../api/axios';
 import DashboardCard from '../components/DashboardCard';
 import AIResultCard from '../components/AIResultCard';
@@ -10,18 +11,17 @@ const Dashboard = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const [{ data: revenue }, { data: ai }] = await Promise.all([
-          api.get('/analytics/revenue'),
-          api.post('/ai/suggestions', {
-            businessSummary: 'Small ecommerce store with mixed inventory',
-            currentIssues: 'Need better conversion and repeat customers'
-          })
-        ]);
+        const revenueResponse = await api.get('/analytics/revenue');
+        const aiResponse = await api.post('/ai/suggestions', {
+          businessSummary: 'Small ecommerce store with mixed inventory',
+          currentIssues: 'Need better conversion and repeat customers'
+        });
 
-        setMetrics(revenue);
-        setSuggestion(ai.result);
+        setMetrics(revenueResponse.data);
+        setSuggestion(aiResponse.data.result);
       } catch (error) {
         setSuggestion('Unable to load AI suggestions right now.');
+        toast.error('Failed to load dashboard insights');
       }
     };
 
@@ -41,7 +41,7 @@ const Dashboard = () => {
         <DashboardCard title="Products" value={metrics.productCount || 0} subtitle="Active catalog count" />
       </div>
 
-      <AIResultCard title="AI Business Suggestions" content={suggestion} />
+      <AIResultCard title="AI Business Suggestions" content={suggestion} compact />
     </div>
   );
 };

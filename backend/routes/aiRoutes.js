@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { protect } = require('../middleware/authMiddleware');
-const { description, tags, caption, suggestions } = require('../controllers/aiController');
+const { description, tags, caption, suggestions, pricing, score } = require('../controllers/aiController');
 
 const router = express.Router();
 
@@ -35,5 +35,24 @@ router.post(
 );
 
 router.post('/suggestions', [body('businessSummary').optional().isString()], suggestions);
+
+router.post(
+  '/pricing',
+  [
+    body('title').trim().notEmpty().withMessage('Title is required'),
+    body('category').trim().notEmpty().withMessage('Category is required'),
+    body('price').optional().isFloat({ min: 0 })
+  ],
+  pricing
+);
+
+router.post(
+  '/score',
+  [
+    body('title').trim().notEmpty().withMessage('Title is required'),
+    body('category').trim().notEmpty().withMessage('Category is required')
+  ],
+  score
+);
 
 module.exports = router;
