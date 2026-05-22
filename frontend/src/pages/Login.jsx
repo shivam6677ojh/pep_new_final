@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-100 via-white to-emerald-100 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-cyan-100 via-white to-emerald-100 px-4">
       <form onSubmit={onSubmit} className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-600">SmartStore AI</p>
         <h1 className="mt-2 text-3xl font-extrabold text-slate-900">Welcome Back</h1>

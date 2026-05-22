@@ -15,6 +15,8 @@ const AIContent = () => {
     tags: '',
     caption: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const onChange = (event) => {
     setFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -22,18 +24,35 @@ const AIContent = () => {
 
   const generateAll = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError('');
 
-    const [descRes, tagsRes, capRes] = await Promise.all([
-      api.post('/ai/description', formData),
-      api.post('/ai/tags', formData),
-      api.post('/ai/caption', formData)
-    ]);
+    try {
+      const [descRes, tagsRes, capRes] = await Promise.all([
+        api.post('/ai/description', formData),
+        api.post('/ai/tags', formData),
+        api.post('/ai/caption', formData)
+      ]);
 
+      setResults({
+        description: descRes.data.result,
+        tags: tagsRes.data.result,
+        caption: capRes.data.result
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to generate content right now.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const clearResults = () => {
     setResults({
-      description: descRes.data.result,
-      tags: tagsRes.data.result,
-      caption: capRes.data.result
+      description: '',
+      tags: '',
+      caption: ''
     });
+    setError('');
   };
 
   return (
@@ -82,10 +101,25 @@ const AIContent = () => {
           placeholder="Optional base description"
           className="rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-cyan-500 focus:outline-none md:col-span-2"
         />
-        <button className="rounded-xl bg-cyan-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-cyan-700 md:col-span-2">
-          Generate AI Content
-        </button>
+        <div className="flex flex-wrap gap-2 md:col-span-2">
+          <button
+            type="submit"
+            disabled={loading}
+            className="rounded-xl bg-cyan-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:bg-cyan-300"
+          >
+            {loading ? 'Generating...' : 'Generate AI Content'}
+          </button>
+          <button
+            type="button"
+            onClick={clearResults}
+            className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+          >
+            Clear Output
+          </button>
+        </div>
       </form>
+
+      {error ? <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">{error}</p> : null}
 
       <div className="grid gap-4 lg:grid-cols-3">
         <AIResultCard title="Description" content={results.description} />
