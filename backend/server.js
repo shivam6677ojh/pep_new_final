@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
